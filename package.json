@@ -2,13 +2,11 @@
   "name": "react-split",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
     "dev": "webpack-dev-server --port 8081 --config webpack.config.js"
   },
-  "author": "",
+  "author": "Peter Marton",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.2.1",

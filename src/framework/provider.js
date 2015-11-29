@@ -7,7 +7,9 @@ export default class Provider extends Component {
     super(props, context)
 
     this.store = props.store
-    this.eventBus = hl()
+    const eventBus = hl()
+
+    this.eventBus = this.store.subscribe(eventBus)
   }
 
   getChildContext () {

@@ -16,11 +16,9 @@ export default function connect (ComponentToWrap, selectProps) {
 
     componentWillMount () {
       this.eventBus
-        .ratelimit(1, 100)  // slow down events
-        .each(data => {
-          const state = selectProps(this.store.getNextState(data))
-
-          this.setState(state)
+        .fork()
+        .each(nextState => {
+          this.setState(nextState)
         })
     }
 

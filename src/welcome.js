@@ -7,26 +7,28 @@ import { connect } from './framework'
 * @class Welcome
 */
 class Welcome extends Component {
-  componentWillMount () {
+  componentDidMount () {
     const { dispatch } = this.props
 
     dispatch({
       type: 'NAME_CHANGE',
       name: 'Smith'
     })
-    dispatch({
+
+    setTimeout(() => dispatch({
       type: 'NAME_CHANGE',
       name: 'John'
-    })
-    dispatch({
+    }), 200)
+
+    setTimeout(() => dispatch({
       type: 'NAME_CHANGE',
       name: 'Samantha'
-    })
+    }), 600)
 
-    dispatch({
+    setTimeout(() => dispatch({
       type: 'NAME_UPPERCASE',
-      name: 'Samantha'
-    })
+      name: 'Upper'
+    }), 800)
   }
 
   /**

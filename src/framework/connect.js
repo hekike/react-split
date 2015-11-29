@@ -18,7 +18,7 @@ export default function connect (ComponentToWrap, selectProps) {
       this.eventBus
         .ratelimit(1, 100)  // slow down events
         .each(data => {
-          const state = this.store.getNextState(data)
+          const state = selectProps(this.store.getNextState(data))
 
           this.setState(state)
         })
@@ -29,7 +29,7 @@ export default function connect (ComponentToWrap, selectProps) {
     }
 
     render () {
-      const props = selectProps(this.state)
+      const props = this.state
       const { dispatch } = this
 
       return <ComponentToWrap {...this.props} {...props} dispatch={dispatch} />

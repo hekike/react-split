@@ -3,31 +3,24 @@
 import React, { Component, PropTypes } from 'react'
 
 export default function connect (ComponentToWrap, selectProps, store) {
-  class Data extends Component {
+  class Connect extends Component {
     constructor (props, context) {
       super(props)
 
-      this.store = context.store
-      this.eventBus = context.eventBus
-      this.states = this.eventBus.stateStream
-
-      this.dispatch = this.dispatch.bind(this)
+      this.dispatch = context.eventBus.dispatch.bind(context.eventBus)
+      this.stateStream = context.eventBus.stateStream
 
       if (store) {
-        this.states = this.eventBus.subscribe(store)
+        this.stateStream = context.eventBus.subscribe(store)
       }
     }
 
     componentWillMount () {
-      this.states
+      this.stateStream
         .fork()
         .each(data => {
           this.setState(data.nextState)
         })
-    }
-
-    dispatch (data) {
-      this.eventBus.dispatch(data)
     }
 
     render () {
@@ -38,12 +31,12 @@ export default function connect (ComponentToWrap, selectProps, store) {
     }
   }
 
-  Data.displayName = 'Data'
+  Connect.displayName = 'Connect'
 
-  Data.contextTypes = {
+  Connect.contextTypes = {
     store: PropTypes.object.isRequired,
     eventBus: PropTypes.object.isRequired
   }
 
-  return Data
+  return Connect
 }

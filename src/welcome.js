@@ -34,7 +34,8 @@ function selectProps (state) {
   }
 }
 
-const reducer = function (prevState, event, globalState) {
+// local store and reducer for Welcome component
+const localReducer = function (prevState, event, globalState) {
   if (event.type === 'NAME_CHANGE') {
     return {
       hello: 'Szia',
@@ -45,4 +46,6 @@ const reducer = function (prevState, event, globalState) {
   return prevState
 }
 
-export default connect(Welcome, selectProps, new Store(reducer))
+const localStore = new Store(localReducer)
+
+export default connect(Welcome, selectProps, localStore)

@@ -4,18 +4,8 @@ export default class Store {
     this.reducer = reducer
   }
 
-  getState () {
-    return this.state
-  }
-
-  subscribe (eventBus) {
-    return eventBus
-      .ratelimit(1, 100)  // slow down events
-      .map(data => this.getNextState(data))
-  }
-
-  getNextState (state, event) {
-    this.state = this.reducer(this.state, event, state)
+  getNextState (globalState, event) {
+    this.state = this.reducer(this.state, event, globalState)
 
     return this.state
   }

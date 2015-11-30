@@ -14,6 +14,7 @@ class Root extends Component {
   componentDidMount () {
     const { dispatch } = this.props
 
+    // dispatch events
     dispatch({
       type: 'NAME_CHANGE',
       name: 'Smith'
@@ -42,7 +43,7 @@ class Root extends Component {
   render () {
     return (<div>
       {'Global store:'} <WelcomeGlobal />
-    {'Global store + local:'} <Welcome />
+      {'Global store + local:'} <Welcome />
       <Content content={'Foo'} />
     </div>)
   }

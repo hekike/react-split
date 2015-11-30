@@ -7,6 +7,7 @@ import Root from './root'
 
 import { Store, Provider } from './framework'
 
+// reducer for gobal store
 const reducer = function (prevState, event) {
   if (event.type === 'NAME_CHANGE') {
     return {
@@ -20,6 +21,8 @@ const reducer = function (prevState, event) {
 
   return prevState
 }
+
+// global store for the app
 const store = new Store(reducer)
 
 render(

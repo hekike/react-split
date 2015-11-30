@@ -1,15 +1,13 @@
 import { Component, PropTypes, Children } from 'react'
-import hl from 'highland'
 import Store from './store'
+import EventBus from './eventBus'
 
 export default class Provider extends Component {
   constructor (props, context) {
     super(props, context)
 
     this.store = props.store
-    const eventBus = hl()
-
-    this.eventBus = this.store.subscribe(eventBus)
+    this.eventBus = new EventBus(this.store)
   }
 
   getChildContext () {

@@ -9,9 +9,13 @@ import { Store, Provider } from './framework'
 
 const reducer = function (state, event) {
   if (event.type === 'NAME_CHANGE') {
-    this.state.name = event.name
+    return {
+      name: event.name
+    }
   } else if (event.type === 'NAME_UPPERCASE') {
-    this.state.name = event.name.toUpperCase()
+    return {
+      name: event.name.toUpperCase()
+    }
   }
 
   return state

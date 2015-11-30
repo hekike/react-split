@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default class Store {
   constructor (reducer) {
     this.state = {}
@@ -14,8 +16,8 @@ export default class Store {
       .map(data => this.getNextState(data))
   }
 
-  getNextState (event) {
-    this.state = this.reducer(this.state, event)
+  getNextState (state, event) {
+    this.state = this.reducer(_.merge({}, this.state, state), event)
 
     return this.state
   }

@@ -1,35 +1,12 @@
 'use strict'
 
 import React, { Component, PropTypes } from 'react'
-import { connect } from './framework'
+import { connect, Store } from './framework'
 
 /**
 * @class Welcome
 */
 class Welcome extends Component {
-  componentDidMount () {
-    const { dispatch } = this.props
-
-    dispatch({
-      type: 'NAME_CHANGE',
-      name: 'Smith'
-    })
-
-    setTimeout(() => dispatch({
-      type: 'NAME_CHANGE',
-      name: 'John'
-    }), 200)
-
-    setTimeout(() => dispatch({
-      type: 'NAME_CHANGE',
-      name: 'Samantha'
-    }), 600)
-
-    setTimeout(() => dispatch({
-      type: 'NAME_UPPERCASE',
-      name: 'Upper'
-    }), 800)
-  }
 
   /**
    * @method render
@@ -37,7 +14,7 @@ class Welcome extends Component {
    */
   render () {
     return (<h2>
-      {`Hello ${this.props.name}!`}
+      {`${this.props.hello} ${this.props.name}!`}
     </h2>)
   }
 }
@@ -45,14 +22,27 @@ class Welcome extends Component {
 Welcome.displayName = 'Welcome'
 
 Welcome.propTypes = {
+  hello: PropTypes.string,
   name: PropTypes.string,
   dispatch: PropTypes.func.isRequired
 }
 
 function selectProps (state) {
   return {
+    hello: state.hello,
     name: state.name
   }
 }
 
-export default connect(Welcome, selectProps)
+const reducer = function (state, event) {
+  if (event.type === 'NAME_CHANGE') {
+    return {
+      hello: 'Szia',
+      name: state.name + ' Doe'
+    }
+  }
+
+  return state
+}
+
+export default connect(Welcome, selectProps, new Store(reducer))

@@ -2,28 +2,32 @@
 
 import React, { Component, PropTypes } from 'react'
 
-export default function connect (ComponentToWrap, selectProps) {
+export default function connect (ComponentToWrap, selectProps, store) {
   class Data extends Component {
     constructor (props, context) {
       super(props)
 
       this.store = context.store
       this.eventBus = context.eventBus
-      this.state = selectProps(this.store.getState())
+      this.states = this.eventBus.stateStream
 
       this.dispatch = this.dispatch.bind(this)
+
+      if (store) {
+        this.states = this.eventBus.subscribe(store)
+      }
     }
 
     componentWillMount () {
-      this.eventBus
+      this.states
         .fork()
-        .each(nextState => {
-          this.setState(nextState)
+        .each(data => {
+          this.setState(data.nextState)
         })
     }
 
     dispatch (data) {
-      this.eventBus.write(data)
+      this.eventBus.dispatch(data)
     }
 
     render () {

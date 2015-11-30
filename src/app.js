@@ -7,7 +7,7 @@ import Root from './root'
 
 import { Store, Provider } from './framework'
 
-const reducer = function (state, event) {
+const reducer = function (prevState, event) {
   if (event.type === 'NAME_CHANGE') {
     return {
       name: event.name
@@ -18,7 +18,7 @@ const reducer = function (state, event) {
     }
   }
 
-  return state
+  return prevState
 }
 const store = new Store(reducer)
 

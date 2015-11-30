@@ -34,15 +34,15 @@ function selectProps (state) {
   }
 }
 
-const reducer = function (state, event) {
+const reducer = function (prevState, event, globalState) {
   if (event.type === 'NAME_CHANGE') {
     return {
       hello: 'Szia',
-      name: state.name + ' Doe'
+      name: globalState.name + ' Doe'
     }
   }
 
-  return state
+  return prevState
 }
 
 export default connect(Welcome, selectProps, new Store(reducer))

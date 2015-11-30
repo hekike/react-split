@@ -35,7 +35,22 @@ const containerReducer = function (prevState, event) {
   return prevState
 }
 
+// global store for the app
+const store = new Store(reducer)
+
+...
+
 export default connect(MySmartContainer, selectProps)
+
+...
+
+render(
+  <Provider store={store}>
+    ...
+    <MySmartContainer />
+  </Provider>,
+  document.getElementById('root')
+)
 ```
 
 ### container level store

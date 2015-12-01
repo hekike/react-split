@@ -25,8 +25,8 @@ I believe that in most cases caching should be controlled by request headers ins
 
 Like in ~Redux:  
 ```js
-const containerReducer = function (prevState, event) {
-  if (event.type === 'SET_FOO') {
+const containerReducer = function (prevState, action) {
+  if (action.type === 'SET_FOO') {
     return {
       foo: 'much'
     }
@@ -36,7 +36,7 @@ const containerReducer = function (prevState, event) {
 }
 
 // global store for the app
-const store = new Store(reducer)
+const store = new Store(initialState = {}, reducer)
 
 ...
 
@@ -56,8 +56,8 @@ render(
 ### container level store
 
 ```js
-const containerReducer = function (prevState, event, globalState) {
-  if (event.type === 'SET_FOO') {
+const containerReducer = function (prevState, action) {
+  if (action.type === 'SET_FOO') {
     return {
       foo: 'wow'
       such: globalState.name + ' so'
@@ -67,5 +67,5 @@ const containerReducer = function (prevState, event, globalState) {
   return prevState
 }
 
-export default connect(MySmartContainer, selectProps, new Store(localReducer))
+export default connect(MySmartContainer, selectProps, new Store({}, localReducer))
 ```

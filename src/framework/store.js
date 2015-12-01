@@ -1,12 +1,12 @@
+import Rx from 'rx'
+
 export default class Store {
-  constructor (reducer) {
-    this.state = {}
-    this.reducer = reducer
+  constructor (initialState, reducer) {
+    this.dispatcherSubject = new Rx.BehaviorSubject(initialState)
+    this.stateSubject = this.dispatcherSubject.scan(reducer)
   }
 
-  getNextState (globalState, event) {
-    this.state = this.reducer(this.state, event, globalState)
-
-    return this.state
+  dispatch (action) {
+    return this.dispatcherSubject.onNext(action)
   }
 }

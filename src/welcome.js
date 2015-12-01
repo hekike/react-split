@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect, Store } from './framework'
+import { fromJS } from 'immutable'
 
 /**
 * @class Welcome
@@ -29,23 +30,25 @@ Welcome.propTypes = {
 
 function selectProps (state) {
   return {
-    hello: state.hello,
-    name: state.name
+    hello: state.get('hello'),
+    name: state.get('name')
   }
 }
 
 // local store and reducer for Welcome component
-const localReducer = function (prevState, event, globalState) {
-  if (event.type === 'NAME_CHANGE') {
-    return {
-      hello: 'Szia',
-      name: globalState.name + ' Doe'
-    }
+const localReducer = function (prevState, action) {
+  if (action.type === 'NAME_CHANGE') {
+    return prevState
+      .set('hello', 'szia')
+      .update('name', name => name + ' Doe')
   }
 
   return prevState
 }
 
-const localStore = new Store(localReducer)
+const localStore = new Store(fromJS({
+  hello: 'Ciao',
+  name: 'Foo'
+}), localReducer)
 
 export default connect(Welcome, selectProps, localStore)

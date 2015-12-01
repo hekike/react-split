@@ -28,7 +28,7 @@ WelcomeGlobal.propTypes = {
 
 function selectProps (state) {
   return {
-    name: state.name
+    name: state.get('name')
   }
 }
 

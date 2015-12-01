@@ -59,7 +59,7 @@ Container level store borns at `componentWillMount ` and dies at `componentWillU
 It's a perfect place to store route related states for example.
 
 ```js
-const containerReducer = function (prevState, action) {
+const localReducer = function (prevState, action) {
   if (action.type === 'SET_FOO') {
     return {
       foo: 'wow'
@@ -70,5 +70,10 @@ const containerReducer = function (prevState, action) {
   return prevState
 }
 
-export default connect(MySmartContainer, selectProps, new Store({}, localReducer))
+const localInitialState = {}
+
+const localEventFilter = (event, props) => event.id === props.id
+
+export default connect(MySmartContainer, selectProps,
+  localInitialState, localReducer, localEventFilter))
 ```

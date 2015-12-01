@@ -4,7 +4,11 @@ import React, { Component, PropTypes } from 'react'
 import Store from './store'
 import Dispatcher from './dispatcher'
 
-export default function connect (ComponentToWrap, selectProps, initialData, reducer, filterBy) {
+export default function connect (ComponentToWrap, selectProps,
+    initialData, reducer, filterBy) {
+  /**
+  * @class Connect
+  */
   class Connect extends Component {
     constructor (props, context) {
       super(props)
@@ -13,7 +17,7 @@ export default function connect (ComponentToWrap, selectProps, initialData, redu
       this.subscribe = null
       this.state = {
         props: null,
-        localProps: initialData
+        localProps: null
       }
 
       this.localStore = null
@@ -67,8 +71,8 @@ export default function connect (ComponentToWrap, selectProps, initialData, redu
 
     render () {
       const { dispatch } = this
-
-      const props = typeof selectProps === 'function' ? selectProps(this.state.props, this.state.localProps) : {}
+      const props = typeof selectProps === 'function'
+        ? selectProps(this.state.props, this.state.localProps) : {}
 
       return <ComponentToWrap {...this.props} {...props} dispatch={dispatch} />
     }

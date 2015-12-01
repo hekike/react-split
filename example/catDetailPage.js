@@ -44,7 +44,7 @@ function selectProps (state, localState) {
   }
 }
 
-// local store and reducer for CatDetailPage component
+// reducer for local (container's) store
 const localReducer = function (prevState, action) {
   if (action.type === 'CAT_NAME_CHANGE') {
     return prevState.set('name', action.name)
@@ -53,10 +53,13 @@ const localReducer = function (prevState, action) {
   return prevState
 }
 
+// initial data for local (container's) store
 const initialData = fromJS({
   name: 'Initial name'
 })
 
+// event filter for local (container's) store
+// local receiver only receives events which match to this filter
 const eventFilter = (event, props) => event.id === props.id
 
 export default connect(CatDetailPage, selectProps,

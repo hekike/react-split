@@ -63,7 +63,7 @@ const localReducer = function (prevState, action) {
   if (action.type === 'SET_FOO') {
     return {
       foo: 'wow'
-      such: globalState.name + ' so'
+      such: action.name
     }
   }
 

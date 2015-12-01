@@ -9,8 +9,14 @@ export default class Dispatcher {
     this.subject.onNext(data)
   }
 
-  register (store) {
-    return this.subject.subscribe(
+  register (store, filter) {
+    let subject = this.subject
+
+    if (typeof filter === 'function') {
+      subject = this.subject.filter(filter)
+    }
+
+    return subject.subscribe(
       (data) => store.dispatcherSubject.onNext(data)
     )
   }

@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import Store from './store'
 import Dispatcher from './dispatcher'
 
-export default function connect (ComponentToWrap, selectProps, localStore) {
+export default function connect (ComponentToWrap, selectProps, initialData, reducer, filterBy) {
   class Connect extends Component {
     constructor (props, context) {
       super(props)
@@ -12,24 +12,35 @@ export default function connect (ComponentToWrap, selectProps, localStore) {
       this.dispatch = this.dispatch.bind(this)
       this.subscribe = null
       this.state = {
-        props: null
+        props: null,
+        localProps: initialData
       }
 
-      if (localStore) {
-        this.localDispatchSubscribe = context.dispatcher.register(localStore)
+      this.localStore = null
+
+      if (initialData && reducer) {
+        this.localStore = new Store(initialData, reducer)
+      }
+
+      if (this.localStore) {
+        this.localDispatchSubscribe = context.dispatcher
+          .register(this.localStore, event => filterBy(event, this.props))
       }
     }
 
     componentWillMount () {
       let stateStream = this.context.store.stateSubject
 
-      if (localStore) {
-        stateStream = stateStream.merge(localStore.stateSubject)
-      }
-
       this.subscribe = stateStream.subscribe(nextState => this.setState({
         props: nextState
       }))
+
+      if (this.localStore) {
+        let localStateStream = this.localStore.stateSubject
+        this.localSubscribe = localStateStream.subscribe(nextState => this.setState({
+          localProps: nextState
+        }))
+      }
     }
 
     shouldComponentUpdate () {
@@ -39,6 +50,10 @@ export default function connect (ComponentToWrap, selectProps, localStore) {
     componentWillUnmount () {
       if (this.subscribe) {
         this.subscribe.dispose()
+      }
+
+      if (this.localSubscribe) {
+        this.localSubscribe.dispose()
       }
 
       if (this.localDispatchSubscribe) {
@@ -53,7 +68,7 @@ export default function connect (ComponentToWrap, selectProps, localStore) {
     render () {
       const { dispatch } = this
 
-      const props = typeof selectProps === 'function' ? selectProps(this.state.props) : {}
+      const props = typeof selectProps === 'function' ? selectProps(this.state.props, this.state.localProps) : {}
 
       return <ComponentToWrap {...this.props} {...props} dispatch={dispatch} />
     }

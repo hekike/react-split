@@ -6,14 +6,12 @@ import { fromJS } from 'immutable'
 
 import Root from './root'
 
-import { Store, Provider } from './framework'
+import { Store, Provider } from '../src'
 
 // reducer for gobal store
 const reducer = function (prevState, action) {
-  if (action.type === 'NAME_CHANGE') {
-    return prevState.set('name', action.name)
-  } else if (action.type === 'NAME_UPPERCASE') {
-    return prevState.set('name', action.name.toUpperCase())
+  if (action.type === 'STATUS_CHANGE') {
+    return prevState.set('status', action.status)
   }
 
   return prevState
@@ -21,7 +19,7 @@ const reducer = function (prevState, action) {
 
 // global store for the app
 const store = new Store(fromJS({
-  name: null
+  status: 'Initial status'
 }), reducer)
 
 render(

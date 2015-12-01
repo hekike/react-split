@@ -3,11 +3,12 @@
 const path = require('path')
 
 const SRC_FOLDER = path.join(__dirname, 'src')
+const EXAMPLE_FOLDER = path.join(__dirname, 'example')
 const DIST_FOLDER = path.join(__dirname, 'dist')
 
 const webpackConfig = {
   entry: {
-    app: [path.join(SRC_FOLDER, 'app.js')]
+    app: [path.join(EXAMPLE_FOLDER, 'app.js')]
   },
   output: {
     publicPath: '/', // This is used for generated urls
@@ -20,7 +21,7 @@ const webpackConfig = {
         test: /\.js$/,
         loaders: ['babel'],
         exclude: /node_modules/,
-        include: SRC_FOLDER
+        include: [SRC_FOLDER, EXAMPLE_FOLDER]
       }
     ]
   }

@@ -56,7 +56,9 @@ render(
 ### container level store
 
 Container level store borns at `componentWillMount ` and dies at `componentWillUnmount`.  
-It's a perfect place to store route related states for example.
+It's a perfect place to store route related states for example.  
+
+You can also filter events by different parameters like id of resource.
 
 ```js
 const localReducer = function (prevState, action) {

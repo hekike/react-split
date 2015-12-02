@@ -5,8 +5,4 @@ export default class Store {
     this.dispatcherSubject = new Rx.BehaviorSubject(initialState)
     this.stateSubject = this.dispatcherSubject.scan(reducer)
   }
-
-  dispatch (action) {
-    return this.dispatcherSubject.onNext(action)
-  }
 }

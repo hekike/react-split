@@ -75,7 +75,7 @@ const localReducer = function (prevState, action) {
 const localInitialState = {}
 
 // local reducer will receive only the matching events
-const localEventFilter = (event, props) => event.id === props.id
+const localEventFilter = (event, props) => event.catId === props.id
 
 export default connect(MySmartContainer, selectProps,
   localInitialState, localReducer, localEventFilter))

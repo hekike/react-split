@@ -16,7 +16,7 @@ class Root extends Component {
     // dispatch events
     dispatch({
       type: 'CAT_NAME_CHANGE',
-      id: 1,
+      catId: 1,
       name: 'Garfield'
     })
 
@@ -27,7 +27,7 @@ class Root extends Component {
 
     setTimeout(() => dispatch({
       type: 'CAT_NAME_CHANGE',
-      id: 2,
+      catId: 2,
       name: 'Casper'
     }), 600)
 

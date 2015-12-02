@@ -60,7 +60,7 @@ const initialData = fromJS({
 
 // event filter for local (container's) store
 // local receiver only receives events which match to this filter
-const eventFilter = (event, props) => event.id === props.id
+const eventFilter = (event, props) => event.catId === props.id
 
 export default connect(CatDetailPage, selectProps,
   initialData, localReducer, eventFilter)

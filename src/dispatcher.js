@@ -12,6 +12,7 @@ export default class Dispatcher {
   register (store, filter) {
     let subject = this.subject
 
+    // send only user specified actions
     if (typeof filter === 'function') {
       subject = this.subject.filter(filter)
     }

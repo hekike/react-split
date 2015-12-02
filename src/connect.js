@@ -14,9 +14,9 @@ export default function connect (ComponentToWrap, selectProps,
       super(props)
 
       this.dispatch = this.dispatch.bind(this)
-      this.subscribe = null
+      this.subscribes = []
       this.state = {
-        props: null,
+        globalProps: null,
         localProps: null
       }
 
@@ -27,42 +27,43 @@ export default function connect (ComponentToWrap, selectProps,
       }
 
       if (this.localStore) {
-        this.localDispatchSubscribe = context.dispatcher
-          .register(this.localStore, event => filterBy(event, this.props))
+        const actionFilter = event => filterBy(event, this.props)
+
+        this.subscribes.push(
+          context.dispatcher.register(this.localStore, actionFilter)
+        )
       }
     }
 
     componentWillMount () {
-      let stateStream = this.context.store.stateSubject
+      let globalStateStream = this.context.store.stateSubject
 
-      this.subscribe = stateStream.subscribe(nextState => this.setState({
-        props: nextState
-      }))
+      this.subscribes.push(
+        globalStateStream.subscribe(nextState => this.setState({
+          globalProps: nextState
+        }))
+      )
 
       if (this.localStore) {
         let localStateStream = this.localStore.stateSubject
-        this.localSubscribe = localStateStream.subscribe(nextState => this.setState({
-          localProps: nextState
-        }))
+
+        this.subscribes.push(
+          localStateStream.subscribe(nextState => this.setState({
+            localProps: nextState
+          }))
+        )
       }
     }
 
-    shouldComponentUpdate () {
-      return !!this.state.props
+    shouldComponentUpdate (nextProps, nextState) {
+      const globalStateChanged = this.state.globalProps !== nextState.globalProps
+      const localStateChanged = this.state.localProps !== nextState.localProps
+
+      return globalStateChanged || localStateChanged
     }
 
     componentWillUnmount () {
-      if (this.subscribe) {
-        this.subscribe.dispose()
-      }
-
-      if (this.localSubscribe) {
-        this.localSubscribe.dispose()
-      }
-
-      if (this.localDispatchSubscribe) {
-        this.localDispatchSubscribe.dispose()
-      }
+      this.subscribes.forEach(subscribe => subscribe.dispose())
     }
 
     dispatch (action) {
@@ -72,7 +73,7 @@ export default function connect (ComponentToWrap, selectProps,
     render () {
       const { dispatch } = this
       const props = typeof selectProps === 'function'
-        ? selectProps(this.state.props, this.state.localProps) : {}
+        ? selectProps(this.state.globalProps, this.state.localProps) : {}
 
       return <ComponentToWrap {...this.props} {...props} dispatch={dispatch} />
     }

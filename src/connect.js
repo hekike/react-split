@@ -36,7 +36,7 @@ export default function connect (ComponentToWrap, selectProps,
     }
 
     componentWillMount () {
-      let globalStateStream = this.context.store.stateSubject
+      let globalStateStream = this.context.store.nextStateSubject
 
       this.subscribes.push(
         globalStateStream.subscribe(nextState => this.setState({
@@ -45,7 +45,7 @@ export default function connect (ComponentToWrap, selectProps,
       )
 
       if (this.localStore) {
-        let localStateStream = this.localStore.stateSubject
+        let localStateStream = this.localStore.nextStateSubject
 
         this.subscribes.push(
           localStateStream.subscribe(nextState => this.setState({

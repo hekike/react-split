@@ -18,7 +18,8 @@ export function setStatus (status) {
 }
 
 export function setStatusAsync (status) {
-  return dispatch => {
-    setTimeout(dispatch(setStatus(status)), 200)
+  return (dispatch, getState) => {
+    const state = getState()
+    setTimeout(dispatch(setStatus(`${state.get('status')} => ${status}`)), 200)
   }
 }

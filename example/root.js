@@ -6,6 +6,8 @@ import { connect } from '../src'
 import StatusBar from './StatusBar'
 import CatDetailPage from './catDetailPage'
 
+import { changeCatName, setStatus, setStatusAsync } from './actions'
+
 /**
 * @class Root
 */
@@ -14,27 +16,11 @@ class Root extends Component {
     const { dispatch } = this.props
 
     // dispatch events
-    dispatch({
-      type: 'CAT_NAME_CHANGE',
-      catId: 1,
-      name: 'Garfield'
-    })
+    dispatch(changeCatName(1, 'Garfield'))
+    setTimeout(() => dispatch(changeCatName(2, 'Casper')), 600)
 
-    setTimeout(() => dispatch({
-      type: 'STATUS_CHANGE',
-      status: 'Status 1'
-    }), 200)
-
-    setTimeout(() => dispatch({
-      type: 'CAT_NAME_CHANGE',
-      catId: 2,
-      name: 'Casper'
-    }), 600)
-
-    setTimeout(() => dispatch({
-      type: 'STATUS_CHANGE',
-      status: 'Status 2'
-    }), 800)
+    setTimeout(() => dispatch(setStatus('Status 1')), 200)
+    setTimeout(() => dispatch(setStatusAsync('Status 2')), 600)
   }
 
   /**
